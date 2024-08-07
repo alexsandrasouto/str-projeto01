@@ -5,8 +5,8 @@
 #include <unistd.h>
 
 // Definições
-#define NUM_BARBEIROS 3
-#define NUM_CADEIRAS_ESPERA 5
+#define NUM_BARBEIROS 1
+#define NUM_CADEIRAS_ESPERA 2
 #define NUM_CLIENTES 20
 
 // Semáforos e mutex
@@ -40,13 +40,13 @@ void* cliente(void* id) {
 
             sem_wait(&sem_barbeiros);
 
-            int barbeiro_id = 0;
+            // int barbeiro_id = 0;
             int i;
             for(i = 0; i < NUM_BARBEIROS; i++){
                 if (pthread_mutex_trylock(&mutex_cadeira_barbeiro[i]) == 0) {
-                    barbeiro_id = i+1;
+                    // barbeiro_id = i+1;
 
-                    printf("Cliente %d está sendo atendido pelo barbeiro %d \n", cliente_id, barbeiro_id);
+                    printf("Cliente %d está sendo atendido pelo barbeiro %d \n", cliente_id, i+1);
                     sleep(3);
 
                     printf("Cliente %d terminou o corte de cabelo e saiu. \n", cliente_id);
