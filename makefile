@@ -25,10 +25,3 @@ clean:
 run: $(TARGET)
 	./$(TARGET)
 
-# Instruções de uso
-help:
-	@echo "Use 'make' para compilar o projeto."
-	@echo "Use 'make run' para executar o projeto."
-	@echo "Use 'make clean' para remover o executável."
-
-.PHONY: all clean run help
