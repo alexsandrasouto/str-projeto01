@@ -28,5 +28,5 @@ Neste projeto é implementada a sincronização de processos utilizando semáfor
 
 ## Demostração
 O vídeo de demostração pode ser encontrado no link: 
-
+https://youtu.be/QiEmb1oa0tk
 

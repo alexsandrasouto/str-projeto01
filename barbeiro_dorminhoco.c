@@ -30,7 +30,7 @@ void* cliente(void* id) {
             sem_wait(&sem_cadeiras_espera); // Espera por uma cadeira de espera
 
             sem_getvalue(&sem_cadeiras_espera, &cadeiras_livres);
-            printf("Cliente %d sentou na cadeira de espera. Cadeiras de espera livres: %d \n", cliente_id, cadeiras_livres);
+            printf("      Cliente %d sentou na cadeira de espera. Cadeiras de espera livres: %d \n", cliente_id, cadeiras_livres);
 
             sem_post(&sem_clientes); // Sinaliza que um cliente chegou
             pthread_mutex_unlock(&mutex_cadeiras_espera); // Libera o mutex de acesso à fila de cadeiras de espera
@@ -41,11 +41,11 @@ void* cliente(void* id) {
             for(int i = 0; i < NUM_BARBEIROS; i++){
                 if (pthread_mutex_trylock(&mutex_cadeira_barbeiro[i]) == 0) {  // Bloqueia o acesso à cadeira do barbeiro disponível
                     // Cliente está sendo atendido por um barbeiro
-                    printf("Cliente %d está sendo atendido. \n", cliente_id);
+                    printf("      Cliente %d está sendo atendido. \n", cliente_id);
 
-                    sleep(rand() % 2 +1); // Simula o tempo de atendimento
+                    sleep(rand() % 3 + 2); // Simula o tempo de atendimento
 
-                    printf("Cliente %d terminou o corte de cabelo e saiu. \n", cliente_id);
+                    printf("      Cliente %d terminou o corte de cabelo e saiu. \n", cliente_id);
         
                     pthread_mutex_unlock(&mutex_cadeira_barbeiro[i]); // Libera o acesso à cadeira do barbeiro que ele estava 
                     sem_post(&sem_barbeiros); // Sinaliza que há um barbeiro disponível
@@ -59,7 +59,7 @@ void* cliente(void* id) {
         }
         else{
             pthread_mutex_unlock(&mutex_cadeiras_espera); // Libera o mutex de acesso à fila de cadeiras de espera
-            printf("Cliente %d foi embora sem ser atendido. Não há cadeiras de espera livres. \n", cliente_id);
+            printf("   Cliente %d foi embora sem ser atendido. Não há cadeiras de espera livres. \n", cliente_id);
 
             free(id);
             pthread_exit(NULL);
@@ -87,12 +87,12 @@ void* barbeiro(void* id) {
         sem_post(&sem_cadeiras_espera);   // Incrementa o valor de cadeiras de espera, já que está atendendo um cliente
         sem_getvalue(&sem_cadeiras_espera, &cadeiras_livres);
 
-        printf("O barbeiro %d está acordado. Atendendo um cliente. Cadeiras de espera livres: %d  \n", barbeiro_id, cadeiras_livres);
+        printf("    O barbeiro %d está acordado. Atendendo um cliente. Cadeiras de espera livres: %d  \n", barbeiro_id, cadeiras_livres);
         pthread_mutex_unlock(&mutex_cadeiras_espera);  // Libera o acesso ao mutex de cadeiras de espera
         
-        sleep(rand() % 2 +1); // Simula o tempo de atendimento
+        sleep(rand() % 3 + 2); // Simula o tempo de atendimento
         
-        printf("Barbeiro %d terminou de atender e está pronto para o próximo cliente.\n", barbeiro_id);
+        printf("    Barbeiro %d terminou de atender e está pronto para o próximo cliente.\n", barbeiro_id);
     }
 
     free(id);
@@ -102,7 +102,7 @@ void* barbeiro(void* id) {
 void* gerar_clientes(void*) {
     int cliente_id = 1;
     while(1) {
-        sleep(rand() % 3); // Clientes chegam aleatoriamente
+        sleep(rand() % 2); // Clientes chegam aleatoriamente
         int* id = malloc(sizeof(int));
         *id = cliente_id++;
         pthread_t cliente_thread;
